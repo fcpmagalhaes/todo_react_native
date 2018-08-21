@@ -21,9 +21,14 @@ class LoginScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+
+  componentDidMount() {
+    this.TodoList;
+  }
+
   render() {
     return (
-      <LinearGradient style={styles.container} colors={["#37C0A2", "#246A75"]}>
+      <LinearGradient style={styles.container} colors={["#37C0A2", "#164359"]}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.appTittle}>Desafio Todo List</Text>
 
@@ -31,11 +36,11 @@ class LoginScreen extends React.Component {
           style={styles.button}
           onPress={() => this.props.navigation.navigate("Add")}
         >
-          <Text style={styles.text}>Adicionar Item</Text>
+          <Text style={styles.text}>Adicionar Item +</Text>
         </TouchableOpacity>
 
         <View style={styles.card}>
-          <TextInput style={styles.input} placeholder="Adicione um item!" />
+          {/* <TextInput style={styles.input} placeholder="Adicione um item!" /> */}
           {/* <TextInput style={styles.input}
         placeholder="Adicione uma tarefa"
         value={this.newTodoItem}
@@ -95,19 +100,21 @@ const styles = StyleSheet.create({
     fontSize: 24
   },
   listContainer: {
-    alignItems: "center"
+    // alignItems: "center"
   },
   button: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#3960E4",
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
-    width: width - 25
+    width: width - 25,
+    color: "#FFF"
   },
   text: {
     fontWeight: "500",
     fontSize: 18,
-    textAlign: "center"
+    textAlign: "center",
+    color: "#FFF"
   }
 });
 export default LoginScreen;

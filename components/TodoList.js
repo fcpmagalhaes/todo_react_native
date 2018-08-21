@@ -10,7 +10,9 @@ import {
   ScrollView,
   Dimensions,
   Platform,
-  ListViewDataSource
+  ListViewDataSource,
+  AsyncStorage,
+  Image
 } from "react-native";
 
 const { height, width } = Dimensions.get("window");
@@ -44,28 +46,42 @@ class TodoList extends React.Component {
   }
 
   renderRow(todo) {
+    if (todo.completed) {
+      image = <Text>✅</Text>;
+    } else {
+      image = <Text />;
+    }
+
     return (
-      <TouchableOpacity
-        onPress={() => {
-          this.pressRow(todo);
-        }}
-      >
-        <View style={styles.rowContainer}>
-          <Text style={styles.text}>{todo.text}</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Detail")}
+        >
+          <Text
+            style={[
+              styles.text,
+              styles.input,
+              todo.completed ? styles.strikeText : styles.unstrikeText
+            ]}
+          >
+            {todo.text}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.check}>{image}</View>
+      </View>
     );
   }
 
   getTodos() {
-    let todos = [
-      { text: "Todo One", completed: false },
-      { text: "Todo Two", completed: false },
-      { text: "Todo Three", completed: false }
-    ];
-
-    this.setState({
-      todoDataSource: this.state.todoDataSource.cloneWithRows(todos)
+    AsyncStorage.getItem("todos").then(value => {
+      if (value == undefined) {
+        console.log("No Todos...");
+      } else {
+        let todos = JSON.parse(value);
+        this.setState({
+          todoDataSource: this.state.todoDataSource.cloneWithRows(todos)
+        });
+      }
     });
   }
 
@@ -91,12 +107,14 @@ class TodoList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: width - 50,
+    width: width - 40,
     borderBottomColor: "#bbb",
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    marginLeft: 10,
+    marginRight: 10
   },
   rowContainer: {
     flexDirection: "row",
@@ -141,6 +159,13 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     width: width / 2,
     paddingBottom: 5
+  },
+  check: {
+    alignSelf: "auto",
+    marginRight: 20
+  },
+  checkImage: {
+    alignSelf: "flex-end"
   }
 });
 export default TodoList;

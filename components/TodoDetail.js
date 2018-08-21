@@ -21,7 +21,7 @@ import LinearGradient from "react-native-linear-gradient";
 
 const { height, width } = Dimensions.get("window");
 
-class AddForm extends React.Component {
+class TodoDetail extends React.Component {
   static navigationOptions = {
     title: "voltar",
     headerTitleStyle: { textAlign: "left" }
@@ -78,7 +78,7 @@ class AddForm extends React.Component {
         <View style={styles.card}>
           <TextInput
             style={styles.input}
-            placeholder="Adicione um item!"
+            placeholder="Editar item..."
             onChangeText={value => this.onTextChange(value)}
           />
 
@@ -89,13 +89,21 @@ class AddForm extends React.Component {
               onValueChange={value => this.onCompletedChange(value)}
             />
           </View>
+          <View style={styles.buttonList}>
+            <TouchableOpacity
+              style={styles.buttonSave}
+              onPress={this.onSubmit.bind(this)}
+            >
+              <Text style={styles.textButton}>Salvar</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.onSubmit.bind(this)}
-          >
-            <Text style={styles.textButton}>Salvar</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonDel}
+              onPress={this.onSubmit.bind(this)}
+            >
+              <Text style={styles.textButton}>Apagar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </LinearGradient>
     );
@@ -139,13 +147,19 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: "row"
   },
-  button: {
+  buttonSave: {
     backgroundColor: "#F6B815",
     padding: 20,
-    width: width - 25,
+    color: "#FFF",
     borderBottomLeftRadius: 10,
+    width: "50%"
+  },
+  buttonDel: {
+    backgroundColor: "#E45352",
+    padding: 20,
     borderBottomRightRadius: 10,
-    color: "#FFF"
+
+    width: "50%"
   },
   text: {
     fontWeight: "500",
@@ -153,10 +167,14 @@ const styles = StyleSheet.create({
     paddingRight: 15
   },
   textButton: {
-    color: "#FFF",
     fontWeight: "500",
     fontSize: 18,
-    textAlign: "center"
+    textAlign: "center",
+    color: "#FFF"
+  },
+  buttonList: {
+    flexDirection: "row",
+    width: width - 25
   }
 });
-export default AddForm;
+export default TodoDetail;

@@ -5,6 +5,7 @@ import { createStackNavigator } from "react-navigation";
 import LoginScreen from "./components/LoginScreens";
 import TodoList from "./components/TodoList";
 import AddForm from "./components/AddForm";
+import TodoDetail from "./components/TodoDetail";
 
 export default class App extends React.Component {
   render() {
@@ -15,5 +16,6 @@ export default class App extends React.Component {
 const AppStackNavigator = createStackNavigator({
   Login: LoginScreen,
   Home: TodoList,
-  Add: AddForm
+  Add: AddForm,
+  Detail: TodoDetail
 });
