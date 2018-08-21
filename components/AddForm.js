@@ -1,0 +1,143 @@
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  StatusBar,
+  ListView,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Platform,
+  ListViewDataSource,
+  TextInput,
+  Switch,
+  AsyncStorage,
+  navigationOptions
+} from "react-native";
+
+import LinearGradient from "react-native-linear-gradient";
+
+const { height, width } = Dimensions.get("window");
+
+class AddForm extends React.Component {
+  static navigationOptions = {
+    title: "voltar",
+    headerTitleStyle: { textAlign: "left" }
+  };
+  constructor() {
+    super();
+    this.state = {
+      id: "",
+      text: "",
+      completed: false,
+      todos: []
+    };
+  }
+
+  componentDidMount() {
+    this.generateId;
+  }
+  generateId() {
+    let id = Math.floor(Math.random() * 1000000000);
+    this.setState({ id });
+  }
+  onTextChange(value) {
+    this.setState({ text: value });
+  }
+  onCompletedChange(value) {
+    this.setState({ completed: value });
+  }
+  onSubmit() {
+    console.log("Adding Todo...");
+  }
+
+  render() {
+    return (
+      <LinearGradient style={styles.container} colors={["#37C0A2", "#246A75"]}>
+        <View style={styles.card}>
+          <TextInput
+            style={styles.input}
+            placeholder="Adicione um item!"
+            onChangeText={value => this.onTextChange(value)}
+          />
+
+          <View style={styles.completed}>
+            <Text style={styles.text}>Finalizado</Text>
+            <Switch
+              value={this.state.completed}
+              onValueChange={value => this.onCompletedChange(value)}
+            />
+          </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.onSubmit.bind(this)}
+          >
+            <Text style={styles.textButton}>Salvar</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  card: {
+    backgroundColor: "#fff",
+    width: width - 25,
+    borderRadius: 10,
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(50,50,50)",
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        shadowOffset: {
+          height: -1,
+          width: 0
+        }
+      },
+      android: {
+        elevation: 5
+      }
+    })
+  },
+  input: {
+    padding: 20,
+    borderBottomColor: "#bbb",
+    borderBottomWidth: 1,
+    fontSize: 24
+  },
+  completed: {
+    padding: 20,
+    flexDirection: "row"
+  },
+  button: {
+    backgroundColor: "#164359",
+    padding: 20,
+    width: width - 25,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    color: "#FFF"
+  },
+  text: {
+    fontWeight: "500",
+    fontSize: 18,
+    paddingRight: 15
+  },
+  textButton: {
+    color: "#FFF",
+    fontWeight: "500",
+    fontSize: 18,
+    textAlign: "center"
+  }
+});
+export default AddForm;
