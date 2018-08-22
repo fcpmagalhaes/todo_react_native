@@ -30,7 +30,7 @@ class LoginScreen extends React.Component {
     return (
       <LinearGradient style={styles.container} colors={["#37C0A2", "#164359"]}>
         <StatusBar barStyle="light-content" />
-        <Text style={styles.appTittle}>Desafio Todo List</Text>
+        <Text style={styles.appTittle}>Lista de Tarefas</Text>
 
         <TouchableOpacity
           style={styles.button}

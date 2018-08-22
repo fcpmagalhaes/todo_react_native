@@ -14,7 +14,8 @@ import {
   TextInput,
   Switch,
   AsyncStorage,
-  navigationOptions
+  navigationOptions,
+  Share
 } from "react-native";
 
 import LinearGradient from "react-native-linear-gradient";
@@ -26,82 +27,38 @@ class TodoDetail extends React.Component {
     title: "voltar",
     headerTitleStyle: { textAlign: "left" }
   };
-  constructor() {
-    super();
-    this.state = {
-      id: "",
-      text: "",
-      completed: false,
-      todos: []
-    };
+
+  onEdit() {
+    // let newTodo = {
+    //   id: this.state.id,
+    //   text: this.state.text,
+    //   completed: this.state.completed
+    // };
   }
 
-  componentDidMount() {
-    this.generateId();
-    this.getTodos();
-  }
-  generateId() {
-    let id = Math.floor(Math.random() * 1000000000);
-    this.setState({ id });
-  }
-  getTodos() {
-    AsyncStorage.getItem("todos").then(value => {
-      if (value != undefined) {
-        this.setState({ todos: JSON.parse(value) });
-      }
-    });
-  }
-  onTextChange(value) {
-    this.setState({ text: value });
-  }
-  onCompletedChange(value) {
-    this.setState({ completed: value });
-  }
-  onSubmit() {
-    console.log("Adding Todo...");
-    let todos = this.state.todos;
-
-    todos.push({
-      id: this.state.id,
-      text: this.state.text,
-      completed: this.state.completed
-    });
-
-    AsyncStorage.setItem("todos", JSON.stringify(todos));
-
-    this.props.navigation.navigate("Login");
-  }
+  onDelete() {}
 
   render() {
+    const { navigation } = this.props;
+    const todo = navigation.getParam("todo");
     return (
       <LinearGradient style={styles.container} colors={["#37C0A2", "#164359"]}>
-        <View style={styles.card}>
-          <TextInput
-            style={styles.input}
-            placeholder="Editar item..."
-            onChangeText={value => this.onTextChange(value)}
-          />
+        <Text style={styles.appTittle}>{todo.text}</Text>
 
-          <View style={styles.completed}>
-            <Text style={styles.text}>Finalizado</Text>
-            <Switch
-              value={this.state.completed}
-              onValueChange={value => this.onCompletedChange(value)}
-            />
-          </View>
+        <View style={styles.card}>
           <View style={styles.buttonList}>
             <TouchableOpacity
-              style={styles.buttonSave}
-              onPress={this.onSubmit.bind(this)}
+              style={styles.buttonEdit}
+              onPress={this.onEdit.bind(this)}
             >
-              <Text style={styles.textButton}>Salvar</Text>
+              <Text style={styles.textButton}>Editar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.buttonDel}
-              onPress={this.onSubmit.bind(this)}
+              onPress={this.onDelete.bind(this)}
             >
-              <Text style={styles.textButton}>Apagar</Text>
+              <Text style={styles.textButton}>Deletar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -113,15 +70,19 @@ class TodoDetail extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center"
+  },
+  appTittle: {
+    color: "#FFF",
+    fontSize: 36,
+    marginTop: 60,
+    marginBottom: 30,
+    fontWeight: "300"
   },
   card: {
     backgroundColor: "#fff",
     width: width - 25,
     borderRadius: 10,
-    // borderTopLeftRadius: 10,
-    // borderTopRightRadius: 10
     ...Platform.select({
       ios: {
         shadowColor: "rgb(50,50,50)",
@@ -137,34 +98,20 @@ const styles = StyleSheet.create({
       }
     })
   },
-  input: {
-    padding: 20,
-    borderBottomColor: "#bbb",
-    borderBottomWidth: 1,
-    fontSize: 24
-  },
-  completed: {
-    padding: 20,
-    flexDirection: "row"
-  },
-  buttonSave: {
+  buttonEdit: {
     backgroundColor: "#F6B815",
     padding: 20,
     color: "#FFF",
+    borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     width: "50%"
   },
   buttonDel: {
     backgroundColor: "#E45352",
     padding: 20,
+    borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-
     width: "50%"
-  },
-  text: {
-    fontWeight: "500",
-    fontSize: 18,
-    paddingRight: 15
   },
   textButton: {
     fontWeight: "500",

@@ -15,14 +15,16 @@ import {
   Image
 } from "react-native";
 
+import { withNavigation } from "react-navigation";
+
 const { height, width } = Dimensions.get("window");
 
 class TodoList extends React.Component {
-  static navigationOptions = {
-    header: null
-  };
-  constructor() {
-    super();
+  // static navigationOptions = {
+  //   header: null
+  // };
+  constructor(props) {
+    super(props);
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
@@ -41,9 +43,9 @@ class TodoList extends React.Component {
     this.getTodos();
   }
 
-  pressRow(todo) {
-    console.log(todo);
-  }
+  pressRow = todo => {
+    this.props.navigation.navigate("Detail", { todo: todo });
+  };
 
   renderRow(todo) {
     if (todo.completed) {
@@ -55,7 +57,9 @@ class TodoList extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Detail")}
+          onPress={() => {
+            this.pressRow(todo);
+          }}
         >
           <Text
             style={[
@@ -168,4 +172,4 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end"
   }
 });
-export default TodoList;
+export default withNavigation(TodoList);

@@ -21,7 +21,7 @@ import LinearGradient from "react-native-linear-gradient";
 
 const { height, width } = Dimensions.get("window");
 
-class AddForm extends React.Component {
+class EditForm extends React.Component {
   static navigationOptions = {
     title: "voltar",
     headerTitleStyle: { textAlign: "left" }
@@ -31,26 +31,10 @@ class AddForm extends React.Component {
     this.state = {
       id: "",
       text: "",
-      completed: false,
-      todos: []
+      completed: false
     };
   }
 
-  componentDidMount() {
-    this.generateId();
-    this.getTodos();
-  }
-  generateId() {
-    let id = Math.floor(Math.random() * 1000000000);
-    this.setState({ id });
-  }
-  getTodos() {
-    AsyncStorage.getItem("todos").then(value => {
-      if (value != undefined) {
-        this.setState({ todos: JSON.parse(value) });
-      }
-    });
-  }
   onTextChange(value) {
     this.setState({ text: value });
   }
@@ -159,4 +143,4 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
-export default AddForm;
+export default EditForm;
